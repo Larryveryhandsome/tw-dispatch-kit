@@ -1,0 +1,7 @@
+# 選用：不裝也能跑示範，只是對應功能會關閉或改用人工
+openpyxl>=3.1        # 從 Excel 匯入客戶／工單
+pillow-heif>=0.16    # 夥伴用 iPhone 上傳 HEIC 照片
+anthropic>=0.40      # 記帳：拍收據自動讀金額（需要 Anthropic API 金鑰）
+PyMuPDF>=1.24        # 記帳：讀 PDF 憑證
+requests>=2.31       # 國土測繪中心精準定位
+certifi              # 手機推播（Web Push）的憑證清單

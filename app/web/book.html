@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>預約清潔</title>
+<link rel="icon" href="/brand-favicon-64.png">
+<link rel="stylesheet" href="/style.css?v=20261026a">
+</head>
+<body style="padding-bottom:40px">
+<main class="main" style="max-width:680px">
+  <img class="wm book-wm" src="/brand-wordmark.png" alt="" style="visibility:hidden">
+  <h1 class="headline">預約清潔・估價</h1>
+  <p class="sub">不用知道該選哪種清潔，回答幾個問題、拍幾張照片就好。報價會先由主管確認，再把正式報價單傳到您的 LINE。</p>
+  <form id="bk" class="card" novalidate>
+    <div id="lineBox" hidden><h3 style="margin-top:0">想預約哪一種服務？</h3><div class="chips" id="lines"></div><div style="height:18px"></div></div>
+    <div id="hourlyBox" hidden><h3 style="margin-top:0">1. 想預約什麼服務？</h3><div class="chips" id="hsvc"></div>
+      <div class="g3"><div><label for="hdate">日期</label><input id="hdate" type="date"></div><div><label for="htime">開始時間</label><input id="htime" type="time" value="14:00"></div>
+        <div><label for="hhours">幾小時</label><input id="hhours" type="number" step="0.5" inputmode="decimal"></div></div>
+      <label for="hpeople" id="hpeopleL">人數</label><input id="hpeople" type="number" min="1" value="1" inputmode="numeric">
+      <label for="hnote" id="hnoteL">需求說明</label><textarea id="hnote" rows="3"></textarea></div>
+    <div id="helperBox" hidden>
+      <h3 style="margin-top:0">1. 需要什麼服務？</h3>
+      <div class="chips" id="msvc"></div>
+      <div id="helperHours" class="g2" style="margin-top:12px"><div><label for="mpeople">人數</label><input id="mpeople" type="number" min="1" value="1" inputmode="numeric"></div>
+        <div><label for="mhours">幾小時（至少 3 小時）</label><input id="mhours" type="number" step="0.5" min="3" value="4" inputmode="decimal"></div></div>
+      <div class="g2"><div><label for="msize">坪數（選填）</label><input id="msize" inputmode="decimal"></div><div><label for="mrooms">房間／衛浴（選填）</label><input id="mrooms" placeholder="例：3 房 2 衛"></div></div>
+      <div class="banner" id="helperPath" style="margin:16px 0 0"></div>
+    </div>
+    <div id="bnbBox" hidden>
+      <h3 style="margin-top:0">1. 需要什麼服務？</h3>
+      <div class="chips" id="bsvc"></div>
+      <div id="bnbDetail"><h3 style="margin-top:26px">2. 民宿資料</h3>
+      <div class="g2"><div><label for="bname">民宿名稱</label><input id="bname" placeholder="例：客戶13"></div><div><label for="brooms">要清的房間數</label><input id="brooms" inputmode="numeric" placeholder="例：4"></div></div>
+      <div class="g2"><div><label for="bsize">總坪數（選填）</label><input id="bsize" inputmode="decimal"></div><div><label for="bpeople">出勤人數（不確定可空白，系統建議）</label><input id="bpeople" type="number" min="1" inputmode="numeric"></div></div>
+      <div class="chips" style="margin-top:12px"><label><input type="checkbox" id="bnolift"> 沒有電梯</label></div>
+      <label for="bentry">進場方式（門鎖密碼、找管家、到場電話聯絡⋯）</label><input id="bentry">
+      <label>付款方式</label><div class="chips" id="bpay"></div></div>
+      <div class="banner" id="bnbPath" style="margin:16px 0 0"></div>
+    </div>
+    <div id="trashBox" hidden><h3 style="margin-top:0">1. 選方案</h3>
+      <p class="small" style="margin-top:0">晚上 8 點前把垃圾（正常家庭的量）放門口，當晚收走。月方案每月以四週計。</p>
+      <div class="chips" id="tplan"></div>
+      <div id="twdBox"><h3 style="margin-top:22px">2. 每週哪幾天收？</h3><p class="small" id="twdHint" style="margin-top:0"></p><div class="chips" id="twd"></div></div>
+      <h3 style="margin-top:22px">垃圾放在哪裡？</h3>
+      <input id="tplace" aria-label="垃圾放在哪裡" placeholder="例：一樓門口、鐵門旁、管理室旁">
+      <h3 style="margin-top:22px">每次大約幾袋？</h3><p class="small" style="margin-top:0">以大型垃圾袋（約 100–120 公升）估；下面請拍一張平常一次的量。</p>
+      <div class="chips" id="tbags"><label><input type="radio" name="tbags" value="1" checked> 1 袋以內</label><label><input type="radio" name="tbags" value="2"> 2 袋</label><label><input type="radio" name="tbags" value="3"> 3 袋</label><label><input type="radio" name="tbags" value="4"> 4 袋以上</label></div>
+      <h3 style="margin-top:22px">幾點來收比較方便？</h3>
+      <div class="chips" id="tpick"><label><input type="radio" name="tpick" value="20:00" checked> 晚上 8 點後</label><label><input type="radio" name="tpick" value="other"> 指定其他時間</label></div>
+      <div id="ttimeBox" hidden><label for="ttime">希望幾點收</label><input type="time" id="ttime" value="21:00"></div>
+      <div id="trestBox"><h3 style="margin-top:22px">休息日／不用收的日子（選填）</h3><p class="small" style="margin-top:0">店家公休、家裡沒人的日子勾起來，這幾天不會去收。</p><div class="chips" id="trest"></div></div>
+      <h3 style="margin-top:22px">選的那天剛好沒有垃圾車時？</h3>
+      <div class="chips" id="ttruck"><label><input type="radio" name="ttruck" value="前一天收" checked> 改前一天收</label><label><input type="radio" name="ttruck" value="隔天收"> 改隔天收</label><label><input type="radio" name="ttruck" value="都可以"> 都可以，你們安排</label></div>
+      <div class="banner" id="trashPath" style="margin:16px 0 0"></div>
+    </div>
+    <div id="cleanBox">
+    <h3 style="margin-top:0">1. 要清潔的是什麼地方？</h3>
+    <div class="chips" id="space"></div>
+    <div id="condBox"><label>現在的狀況比較像？</label><div class="chips" id="cond"></div></div>
+    <div id="freqBox"><label>多久清一次？</label><div class="chips" id="freq"></div></div>
+    <div class="banner" id="path" style="margin:16px 0 0"></div>
+
+    <div id="sizeBox"><h3 style="margin-top:26px">2. 空間大小</h3>
+      <div class="g2"><div><label for="size">要清潔的坪數</label><input id="size" inputmode="decimal" placeholder="例：30"></div>
+        <div id="kindBox"><label for="kind">房屋類型</label><select id="kind"><option>公寓／大樓</option><option>透天</option></select></div></div>
+      <div class="g3"><div><label for="rooms" id="roomsL">房間數</label><input id="rooms" inputmode="numeric" placeholder="3"></div><div><label for="baths">衛浴數</label><input id="baths" inputmode="numeric" placeholder="2"></div>
+        <div><label for="floors">樓層／層數</label><input id="floors" inputmode="numeric" placeholder="1"></div></div>
+      <div class="chips" style="margin-top:12px"><label><input type="checkbox" id="pets"> 有養寵物</label><label><input type="checkbox" id="ladder"> 高處需要梯子</label><label><input type="checkbox" id="nolift"> 沒有電梯</label></div>
+      <div id="addonBox"><label>加購（選填）</label><div class="chips" id="addon"></div></div></div>
+
+    </div>
+    <div id="trashAddBox" hidden><label>加購垃圾代丟（選填）</label><div class="chips"><label><input type="checkbox" id="trashAdd"> <span id="trashAddL">清潔時一起收垃圾</span></label>
+      <select id="taBags" style="width:auto" aria-label="袋數"><option value="1">1 袋</option><option value="2">2 袋</option><option value="3">3 袋</option><option value="4">4 袋</option><option value="5">5 袋</option></select></div></div>
+    <div id="photoBox">
+    <h3 style="margin-top:26px">3. 現況照片</h3>
+    <div class="banner warn" style="margin:0 0 12px">每個要清潔的區域都要拍（客廳、房間、廚房、浴室、陽台…）。<b>沒拍到的區域，原則上恕不清潔。</b></div>
+    <label class="photobtn" for="pics">＋ 選照片／拍照<input type="file" id="pics" accept="image/*" multiple hidden></label>
+    <div class="thumbs" id="thumbs"></div>
+    <p class="small" id="picCount"></p>
+    <label class="chk"><input type="checkbox" id="viaLine"> 我等一下直接在官方 LINE 傳照片</label>
+    <label class="chk"><input type="checkbox" id="viaHuman"> 現在不方便拍照，請專人跟我聯絡</label>
+    </div>
+
+    <div id="dateBox"><h3 style="margin-top:26px" id="dateH">4. 希望的時間</h3>
+      <div class="g2"><div><label for="date">日期</label><input id="date" type="date"></div><div><label for="slot">時段</label><select id="slot"></select></div></div></div>
+
+    <h3 style="margin-top:26px">5. 聯絡資料</h3>
+    <div class="g2"><div><label for="county">縣市</label><select id="county"></select></div><div><label for="area">鄉鎮區</label><select id="area"></select></div></div>
+    <div id="outside" class="banner warn" hidden></div>
+    <div><label for="address">地址（必填）</label><input id="address" autocomplete="street-address" placeholder="路名、門牌、樓層"></div>
+    <div class="g2"><div><label for="name">怎麼稱呼您</label><input id="name" autocomplete="name" required></div><div><label for="phone">手機</label><input id="phone" inputmode="tel" autocomplete="tel" required></div></div>
+    <div class="g2"><div><label for="line">LINE 名稱（選填）</label><input id="line"></div><div><label for="company">公司名稱（要開發票才填）</label><input id="company"></div></div>
+    <div class="g2"><div><label for="taxid">統一編號（選填）</label><input id="taxid" inputmode="numeric"></div><div></div></div>
+    <label class="chk" style="display:flex;gap:8px;align-items:center;margin-top:10px"><input type="checkbox" id="invoice" style="width:20px;height:20px"> 需要開發票（報價另加 5% 稅）</label>
+    <details id="moreBox" style="margin-top:12px"><summary class="small">更多資料（選填）：Email、偏好星期、從哪裡知道我們</summary>
+      <div class="g2"><div><label for="email">Email（選填）</label><input id="email" type="email" autocomplete="email" inputmode="email"></div>
+        <div><label for="heard">從哪裡知道我們（選填）</label><select id="heard"><option value="">—</option><option>Facebook／IG／Threads</option><option>LINE 官方</option><option>Google 搜尋</option><option>親友推薦</option><option>社區／管委會</option><option>其他</option></select></div></div>
+      <div id="refBox" hidden><label for="referrer">推薦人（親友推薦請留名字）</label><input id="referrer"></div>
+      <div id="prefBox"><label>偏好的星期（可複選）</label><div class="chips" id="prefDays"><label><input type="checkbox" value="一"> 一</label><label><input type="checkbox" value="二"> 二</label><label><input type="checkbox" value="三"> 三</label><label><input type="checkbox" value="四"> 四</label><label><input type="checkbox" value="五"> 五</label><label><input type="checkbox" value="六"> 六</label><label><input type="checkbox" value="日"> 日</label></div></div>
+    </details>
+    <div id="toolsBox"><label>現場掃具（必填）：清潔當天需要我們自備掃具嗎？</label><div class="chips">
+      <label><input type="radio" name="tools" value="full"> 我家掃具齊全，用我家的</label>
+      <label><input type="radio" name="tools" value="basic"> 只有基本的（掃把、拖把），其他請自備</label>
+      <label><input type="radio" name="tools" value="none"> 沒有掃具，請全部自備</label></div>
+      <div class="chips" id="toolsHave" style="margin-top:8px"><span class="small">現場有哪些（可複選，派工會對照夥伴要帶什麼）：</span>
+        <label><input type="checkbox" value="掃把畚斗"> 掃把畚斗</label><label><input type="checkbox" value="拖把"> 拖把</label><label><input type="checkbox" value="水桶"> 水桶</label>
+        <label><input type="checkbox" value="馬桶刷"> 馬桶刷</label><label><input type="checkbox" value="浴室地板刷"> 浴室地板刷</label><label><input type="checkbox" value="抹布"> 抹布</label>
+        <label><input type="checkbox" value="吸塵器"> 吸塵器</label><label><input type="checkbox" value="清潔劑"> 清潔劑</label><label><input type="checkbox" value="垃圾袋"> 垃圾袋</label></div>
+      <input id="toolsNote" placeholder="家裡有哪些、放在哪裡（選填，例：有吸塵器，放在陽台）" style="margin-top:8px"></div>
+    <label for="notes">其他想交代的（重點區域、特別髒的地方、指定人員…）</label><textarea id="notes" rows="3"></textarea>
+    <div style="position:absolute;left:-9999px" aria-hidden="true"><label for="website">網站</label><input id="website" tabindex="-1" autocomplete="off"></div>
+
+    <div id="est" class="estbox" hidden></div>
+    <label class="chk" style="margin-top:18px"><input type="checkbox" id="agree"> 同意<span id="agreeBrand">我們</span>為安排服務使用以上資料與照片（不會提供給第三方）</label>
+    <button class="btn full" style="margin-top:20px" type="submit" id="go">送出</button>
+    <div id="err" class="err" role="alert"></div>
+  </form>
+  <div id="ok" class="card" hidden><h2 style="margin-top:0" id="okT">已收到，謝謝您 🙏</h2><p id="okText"></p>
+    <div id="lineStep" hidden><p><b>最後一步（很重要）：</b>按下面按鈕用 LINE 傳送編號，主管確認後的<b>正式報價單</b>會傳到您的 LINE。</p>
+      <div class="copybox" style="font-size:26px;text-align:center;letter-spacing:4px" id="lineCode"></div>
+      <a class="btn full" id="lineGo" href="#" style="margin-top:14px;background:#06C755">用 LINE 傳送編號</a></div>
+    <a class="btn full sec" id="statusLink" href="#" style="margin-top:14px">查看報價進度 ›</a><div id="okLine"></div></div>
+  <p class="small" id="foot">系統初估僅供參考，原則上以主管確認後的正式報價單為準。</p>
+</main>
+<script src="/pdc.js?v=20261019a"></script>
+<script src="/regions.js?v=20261009p"></script>
+<script src="/draft.js?v=20261013a"></script>
+<style>/* 錯誤訊息固定在畫面下方，看得到 */
+#err:not(:empty){position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:60;margin:0;padding:14px 16px;border-radius:14px;box-shadow:0 6px 24px rgba(0,0,0,.18);font-size:16px;background:#FFF1F0;color:#B3261E;border:1px solid #F3B4AE}
+.lq-bad{outline:3px solid #E5484D;outline-offset:4px;border-radius:12px}
+</style>
+<script src="/lineqr.js?v=20261026a"></script>
+<script src="/book.js?v=20261026a"></script>
+<script src="/demo-banner.js"></script>
+</body>
+</html>

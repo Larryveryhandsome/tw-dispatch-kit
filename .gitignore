@@ -1,0 +1,17 @@
+# 執行時資料、秘密：一律不進 git
+data/
+backups/
+logs/
+*.log
+.env
+*.db
+*.db-wal
+*.db-shm
+*.bk*
+*.bak*
+*.pem
+online.flag
+__pycache__/
+*.pyc
+.venv/
+venv/

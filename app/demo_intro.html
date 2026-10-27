@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>到府清潔接單派工系統</title>
+<style>
+:root{--bg:#f6f4ef;--card:#fff;--ink:#1d1c1a;--mut:#6f6b62;--line:#e4dfd3;--acc:#0b7a5c;--acc2:#e9f5f0;--warn:#b4561b;--warn2:#fbefe6}
+@media (prefers-color-scheme:dark){:root{--bg:#141413;--card:#1f1e1c;--ink:#f1efe9;--mut:#aaa59a;--line:#34322e;--acc:#43c59e;--acc2:#16332a;--warn:#f0a36a;--warn2:#36261a;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.7 -apple-system,"Noto Sans TC","Microsoft JhengHei",sans-serif;padding:0 16px}
+main{max-width:960px;margin:auto;padding-block:36px 56px}
+.kick{color:var(--acc);font-weight:700;font-size:14px;margin:0 0 6px}
+h1{font-size:clamp(27px,5.4vw,40px);line-height:1.25;margin:0 0 12px}
+.lead{color:var(--mut);font-size:17px;margin:0 0 22px;max-width:660px}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:34px}
+a.btn{display:inline-block;text-decoration:none;border-radius:12px;padding:12px 18px;font-weight:700}
+a.p{background:var(--acc);color:#fff}a.g{border:1px solid var(--line);color:var(--ink);background:var(--card)}
+h2{font-size:22px;margin:34px 0 14px}
+.rows{display:grid;gap:12px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:0;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+@media(max-width:640px){.row{grid-template-columns:1fr}}
+.row>div{padding:14px 16px}
+.row .b{background:var(--warn2)}.row .a{background:var(--acc2)}
+.row small{display:block;font-weight:700;font-size:12px;letter-spacing:.04em;margin-bottom:2px}
+.row .b small{color:var(--warn)}.row .a small{color:var(--acc)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+.card h3{margin:0 0 6px;font-size:17px}.card p{margin:0 0 10px;color:var(--mut);font-size:15px}
+.card a{color:var(--acc);font-weight:700;text-decoration:none}
+ol{padding-left:20px;margin:0}ol li{margin:6px 0}
+footer{margin-top:36px;padding:18px;border-radius:14px;background:var(--card);border:1px solid var(--line);text-align:center}
+footer a{color:var(--acc);font-weight:700}
+.note{color:var(--mut);font-size:13px;margin-top:16px}
+</style>
+</head>
+<body>
+<main>
+<p class="kick">給到府清潔、家事服務、民宿清潔的老闆</p>
+<h1>報價、排班、派工、月底對帳，<br>不用再靠 LINE 跟 Excel 硬撐。</h1>
+<p class="lead">這是我們自己的清潔團隊每天在用的營運系統，整理成任何同業都能套用的版本。下面的示範全部是假資料，不用登入，手機也能直接玩。</p>
+<div class="cta"><a class="btn p" href="/enter?as=admin">直接試玩（老闆畫面）→</a><a class="btn g" href="/enter?as=worker">看清潔夥伴的手機畫面</a><a class="btn g" href="/book">看客人怎麼線上估價</a></div>
+
+<h2>以前 vs. 用了系統之後</h2>
+<div class="rows">
+  <div class="row"><div class="b"><small>以前</small>客人在 LINE 問價，一來一往問坪數、問幾間衛浴、問時間，半天才報出價。</div><div class="a"><small>之後</small>客人自己在線上填表、選時段，系統依坪數與狀況自動估價，正式報價單一鍵送出。</div></div>
+  <div class="row"><div class="b"><small>以前</small>誰哪天有空、誰住哪一區，全靠老闆記；有人臨時請假，整週排班重來。</div><div class="a"><small>之後</small>依地區與夥伴可排時間自動派工；請假、改期會提示受影響的工單，重新指派。</div></div>
+  <div class="row"><div class="b"><small>以前</small>夥伴到了沒、做完沒，要一直打電話問；完工照片散在各人手機。</div><div class="a"><small>之後</small>夥伴用手機打卡、拍完工照片，老闆在「今天」面板一眼看到每一場的進度。</div></div>
+  <div class="row"><div class="b"><small>以前</small>月底對帳、開帳單、算夥伴薪水，算到半夜還怕算錯。</div><div class="a"><small>之後</small>工單完成自動入帳；月結客戶的帳單、夥伴的薪資結算一鍵產生。</div></div>
+</div>
+
+<h2>三種人，各看各的畫面</h2>
+<div class="grid">
+  <div class="card"><h3>👔 老闆／客服／帳務</h3><p>今天的服務與派工進度、排班、報價、客戶與夥伴資料、帳務月結。</p><a href="/enter?as=admin">打開老闆畫面 →</a></div>
+  <div class="card"><h3>🧹 清潔夥伴</h3><p>手機看自己的班表與地址、打卡、拍完工照片，不用裝 App。</p><a href="/enter?as=worker">打開夥伴畫面 →</a></div>
+  <div class="card"><h3>🏠 客人</h3><p>官網、線上估價選時段、正式報價單，全部手機完成。</p><a href="/home">官網</a>・<a href="/book">線上估價</a>・<a href="/q/demo-quote-0001">報價單</a></div>
+</div>
+
+<h2>3 分鐘看完的順序</h2>
+<ol>
+  <li>先開<a href="/book">線上估價</a>，用客人的角度填一次：坪數、狀況、時段，看估價怎麼出來。</li>
+  <li>再開<a href="/enter?as=admin">老闆畫面</a>的「今天」與「排班」：每場服務誰去、進度到哪。</li>
+  <li>切到<a href="/enter?as=worker">夥伴畫面</a>：清潔夥伴在手機上看到的就是這樣。</li>
+  <li>最後看「帳務月結」：月結客戶的帳單、夥伴的薪資結算已經算好。</li>
+</ol>
+
+<footer>
+  想套用到你的團隊？可以先免費試用，資料、報價、地區都換成你的。<br>
+  加 LINE <a href="https://line.me/R/ti/p/@812ibtir" target="_blank" rel="noopener">@812ibtir</a>（留白事務所，林其衞）
+</footer>
+<p class="note">示範畫面的客戶、夥伴、地址、電話都是虛構的，可以隨時用 seed_demo.py 重建；示範版不會真的發出 LINE、不會收款。實際功能原則上依各團隊需求調整。</p>
+</main>
+</body>
+</html>
