@@ -49,7 +49,7 @@ class NoHardcodedSecretsTest(unittest.TestCase):
         'google key': r'\bAIza[0-9A-Za-z_\-]{30,}',
         'github token': r'\bgh[pousr]_[A-Za-z0-9]{30,}',
         'real LINE userId': r'\bU(?!0{32})[0-9a-f]{32}\b',
-        'mobile number': r'(?<!\d)09(?!00)\d{2}-?\d{3}-?\d{3}(?!\d)',      # 只允許示範用的 0900-000-xxx
+        'mobile number': r'(?<!\d)09(?!00|28-?880-?392)\d{2}-?\d{3}-?\d{3}(?!\d)',      # 只允許示範用的 0900-000-xxx 與作者公開的聯絡電話
         'windows user path': r'[A-Za-z]:\\\\?(?:Users|AI)',
     }
 

@@ -43,7 +43,7 @@
 | 字典「泰山」「池上」 | `web/regions.js` 全台鄉鎮清單 | 誤判：地名（新北市泰山區、臺東縣池上鄉） |
 | 字典「velo」 | LINE 官方文件用語「Developers」 | 誤判 |
 | 字典「留白」 | `qprint.html`、`style.css` 的版面「留白」 | 誤判：排版用語 |
-| 字典「留白」＋本人姓名 | README、NOTICE、`demo_intro.html`、`web/demo-banner.js` | **刻意保留**：作者署名與「需要客製化？加 LINE @812ibtir（留白事務所，林其衞）」廣告 |
+| 字典「留白」＋本人姓名 | README、NOTICE、`demo_intro.html`、`web/demo-banner.js` | **刻意保留**：作者署名與「需要客製化？加 LINE 林其衞（0928-880-392）」廣告 |
 | 手機號碼 `0900-000-xxx` | `seed_demo.py`、`door.py`、`linepay.py`、`mall.html`、測試 | 誤判：示範用假號碼 |
 | LINE userId／32 碼 hex | `line_bot.py` 的 `OWNER_UID = 'U000…0'` | 誤判：全 0 佔位值 |
 | 文件／資料庫檔 | 本機的 `data/`、`backups/` | 執行示範產生的檔案，已被 `.gitignore` 排除，不在 repo 裡 |

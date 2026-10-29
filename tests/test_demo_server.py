@@ -40,13 +40,13 @@ class PagesTest(unittest.TestCase):
     def test_first_visit_shows_intro_with_ad(self):
         s, body, _ = D.call('/')
         self.assertEqual(s, 200)
-        self.assertIn('@812ibtir', body)                     # 客製化廣告要保留
+        self.assertIn('0928-880-392', body)                     # 客製化廣告要保留
 
     def test_demo_banner_keeps_ad(self):
         s, body, _ = D.call('/demo-banner.js')
         self.assertEqual(s, 200)
-        self.assertIn('@812ibtir', body)
-        self.assertIn('留白事務所', body)
+        self.assertIn('0928-880-392', body)
+        self.assertIn('林其衞', body)
 
     def test_logged_in_pages_200(self):
         jar, _, _ = D.login('admin')
