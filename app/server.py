@@ -326,7 +326,28 @@ class Handler(BaseHTTPRequestHandler):
         return f'{COOKIE}={token}; HttpOnly; SameSite=Lax; Path=/; Max-Age={life}{secure}'
 
     # ── 回應 ──
+    _held = None          # POST 交易進行中：respond 先暫存在這裡，提交後才送出
+
+    @contextlib.contextmanager
+    def hold_until_commit(self):
+        """交易區塊裡的 respond 先暫存，等交易提交、離開 with 之後才真的送出。
+
+        以前回應在提交前就送出，客戶端緊接著的下一個請求偶爾會讀到還沒提交的狀態
+        （例如剛送出的報價單「找不到」、剛登入就 401）。要放在 with 的第一個，才會最後離開。"""
+        self._held = []
+        try:
+            yield
+        except BaseException:
+            self._held = None              # 交易回復：暫存的回應作廢，由外層 fail() 回錯誤
+            raise
+        held, self._held = self._held, None
+        if held:
+            self.respond(*held[0])
+
     def respond(self, obj, status=200, headers=None):
+        if self._held is not None:
+            self._held.append((obj, status, headers))
+            return
         raw = json.dumps(obj, ensure_ascii=False, default=str).encode()
         self.send_bytes(raw, 'application/json; charset=utf-8', status, headers)
 
@@ -1020,7 +1041,7 @@ class Handler(BaseHTTPRequestHandler):
             if route == ['api', 'public', 'apply', 'photo']:        # 應徵照片先在鎖外壓好（壓縮要幾百毫秒，不讓整個系統跟著卡）
                 import recruit, base64
                 jpeg = recruit.shrink(base64.b64decode(str(p.get('content', '')).split(',', 1)[-1]))
-            with LOCK, contextlib.closing(core.connect()) as con, con:
+            with self.hold_until_commit(), LOCK, contextlib.closing(core.connect()) as con, con:      # 先提交、再回應
                 pd_form = {('api', 'public', 'quote'): 'book', ('api', 'public', 'join'): 'join', ('api', 'public', 'site'): 'site',
                            ('api', 'public', 'apply'): 'apply', ('api', 'public', 'hello'): 'hi', ('api', 'public', 'mall', 'order'): 'mall'}.get(tuple(route))
                 if pd_form:                    # 個資法：蒐集告知要勾選同意，後端檢查並留存（版本、時間、IP）

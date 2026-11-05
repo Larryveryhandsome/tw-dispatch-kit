@@ -55,13 +55,14 @@ class Demo:
         self.base = f'http://127.0.0.1:{self.port}'
         self.proc = None
         self.log = None
+        self.cmd = [sys.executable, str(APP / 'demo_server.py')]      # 測試可以換成包一層的啟動指令
 
     def start(self):
         r = run_seed(self.data)
         if r.returncode != 0:
             raise RuntimeError('seed_demo 失敗：' + r.stdout[-2000:] + r.stderr[-2000:])
         self.log = open(self.tmp / 'server.log', 'w', encoding='utf-8')
-        self.proc = subprocess.Popen([sys.executable, str(APP / 'demo_server.py')], env=env_for(self.data, self.port),
+        self.proc = subprocess.Popen(self.cmd, env=env_for(self.data, self.port),
                                      stdout=self.log, stderr=subprocess.STDOUT, creationflags=NO_WINDOW)
         deadline = time.time() + 60
         while time.time() < deadline:
