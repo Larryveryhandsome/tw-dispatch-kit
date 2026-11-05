@@ -12,7 +12,7 @@
 | # | 閘門 | 結果 | 一句話 |
 |---|---|---|---|
 | 1 | 需求與設計 | ✅ | 角色權限、外部服務關閉時的退路、示範與自架兩種模式都寫在 README／SECURITY.md |
-| 2 | 程式本身 | ✅ | 41 項測試全過（11/05 新增 3 項銀行帳戶全端點檢查）；pyflakes 無未定義名稱；相依套件 0 個已知漏洞 |
+| 2 | 程式本身 | ✅ | 44 項測試全過（11/05 新增 3 項銀行帳戶全端點檢查、3 項先提交再回應）；pyflakes 無未定義名稱；相依套件 0 個已知漏洞 |
 | 3 | 串接 | ⚠️ | LINE／LINE Pay／Google／Anthropic 只驗證「沒金鑰不連線、示範版連不出去」，真實帳號沒實測 |
 | 4 | 完成使用者任務 | ✅ | 估價 → 報價 → 簽收成立工單、必填空白、過去日期、竄改條款、重複送出都用 HTTP 實測 |
 | 5 | 安全／效能／環境 | ⚠️ | 越權（夥伴打管理 API、客服看／改夥伴銀行帳戶）、冒用電話重新應徵、CSRF、Origin、停止端點都測過；效能壓測與手機實機瀏覽器沒有做 |
@@ -29,7 +29,7 @@
 | # | 閘門 | 11/05 結果 | 證據 |
 |---|---|---|---|
 | 1 | 需求與設計 | ✅ | README、SECURITY.md 的角色權限、外部服務關閉退路、示範／自架兩種模式與程式一致（`accounts.CAN`：admin＝ops+money+admin、staff＝ops、finance＝ops+money、cleaner＝無） |
-| 2 | 程式本身 | ✅ | 全新 venv 只裝 `requirements.txt`：Python **3.10.20／3.12.3／3.13.18 各連跑 3 次，41 項全過**；Python 3.10 關掉 UTF-8 模式也過；`compileall`（3.10）通過；`pyflakes app tests` 51 則提示、**0 個未定義名稱**（35 個沒用到的 import、8 個沒有佔位的 f-string、4 個沒用到的區域變數、4 個重複 import，逐則看過都不影響行為）；`pip-audit -r requirements.txt`：No known vulnerabilities found |
+| 2 | 程式本身 | ✅ | 全新 venv 只裝 `requirements.txt`：Python **3.10.20／3.12.3／3.13.18 各連跑 3 次，44 項全過**；Python 3.10 關掉 UTF-8 模式也過；`compileall`（3.10）通過；`pyflakes app tests` 51 則提示、**0 個未定義名稱**（35 個沒用到的 import、8 個沒有佔位的 f-string、4 個沒用到的區域變數、4 個重複 import，逐則看過都不影響行為）；`pip-audit -r requirements.txt`：No known vulnerabilities found |
 | 3 | 串接 | ⚠️ | 同前：只驗證沒金鑰不連線、示範版擋掉所有對外連線（`OutboundBlockedTest` 通過）；真實 LINE／LINE Pay／Google／Anthropic 帳號沒實測 |
 | 4 | 完成使用者任務 | ✅ | `QuoteFlowTest` 7 項（估價、必填、過去日期、個資同意、Origin、簽收成立工單）全過；從 GitHub 重新 clone 照 README 跑：`seed_demo.py` 建出客戶 15／夥伴 6／工單 65／派工 71；`/`、`/intro`、`/home`、`/book`、`/mall`、`/privacy`、`/join` 全部 200；四個角色 `/enter` 後 `/api/state` 全部 200；說明頁有客製化廣告；`demo_server.py --stop` 後埠已釋放 |
 | 5 | 安全／效能／環境 | ⚠️ | 兩個已知漏洞複查見下表；**新增 `tests/test_bank_no_leak.py`**：從 `server.py` 讀出所有 GET `/api/...` 端點（目前 41 個）× 4 種查詢參數，staff 與夥伴的回應都不能出現其他夥伴的銀行帳號；效能壓測、手機實機瀏覽器仍沒做 |
@@ -45,6 +45,17 @@
 | staff 看得到／改得到夥伴銀行帳戶 | `server.py`：`state_for` 把 `BANK_FIELDS` 設 null、`/api/save` 移除 `BANK_FIELDS`、存檔回應清掉 | `BankFieldsTest` 2 項＋`test_bank_no_leak.py` 3 項 ✅ | 拿掉三處 → `BankFieldsTest` 2 項 **FAIL**（staff 讀到示範銀行、改得到惡意銀行）；`test_bank_no_leak` staff 那項 **FAIL**（`/api/state` 等漏出全部夥伴帳號） |
 
 另外確認：夥伴只在自己的夥伴頁看得到自己的帳戶（`/api/public/portal/<token>`），不會看到別人的。
+
+### 本次修正：POST 先回應、再提交交易（原已知限制 #5）
+
+| 項目 | 內容 |
+|---|---|
+| 發現 | 本 PR 第一次 CI（Ubuntu 3.10）`test_quote_created_and_waits_for_review` 失敗：剛送出的報價單馬上打開回 400「找不到這張報價單」 |
+| 原因 | `server.py` `do_POST` 交易區塊裡約 30 處 `return self.respond(...)` 在交易提交前就送出回應；客戶端緊接著的請求比 commit 早到就讀到舊狀態。真實使用者也會遇到（剛送出報價就找不到、剛登入就 401） |
+| 重現 | 讓示範 server 每次送出回應後多等 0.3 秒（模擬慢機器）：連續 10 次「建報價→馬上讀」**10/10 失敗** |
+| 修正 | `Handler.hold_until_commit()`：交易區塊裡的 respond 先暫存，等提交、釋放鎖之後才送；交易回復時暫存的回應作廢、照舊回錯誤 |
+| 修正後 | 同樣的重現 **0/10 失敗**；新增 `tests/test_commit_before_respond.py` 3 項（建報價後馬上讀、登入後 POST 馬上讀、失敗仍回 400），舊程式跑會有 2 項 FAIL |
+| 沒改的 | 少數會順便寫入的 GET 端點與 LINE webhook 仍是原本寫法（README 已知限制已改寫） |
 
 ### 去識別化再掃一次
 
@@ -138,7 +149,7 @@
 2. 介面文字與預設值偏向原團隊（三條業務線、派單管理群、宜蘭地區），要換品牌與地區需改設定。
 3. 金鑰加密只支援 Windows DPAPI；非 Windows 請用環境變數。
 4. 沒做效能壓測、沒在 iOS／Android 實機瀏覽器逐頁檢查（來源版本來就在營運中使用，但開源版沒重做）。
-5. **POST 先回應、再提交交易**：同一個瀏覽器在回應後極短時間內的下一個請求，偶爾會讀到還沒提交的狀態（例如剛登入就 401，重新整理即可）。來源程式本來的寫法，開源版沒有改動核心交易流程。
+5. ~~**POST 先回應、再提交交易**~~：**2026-11-05 已修**（見「2026-11-05 上線品質複查」）。POST 交易區塊改成先提交、再送出回應；少數會順便寫入的 GET 與 LINE webhook 仍是原寫法。
 6. 程式約 2.7 萬行 Python、註解為中文；註解去識別化是「規則＋逐類人工檢查」，不是逐行人工審閱。
 
 ## 要店長決定
